@@ -1,7 +1,7 @@
-*©Dominik Englert, 2023<br>
-©Artjom Moisejev, 2023<br>
-©Viktor Bartosek, 2023<br>
-if21b151<br>
+*©Dominik Englert, if21b151, 2023<br>
+©Artjom Moisejev, if21b055, 2023<br>
+©Viktor Bartosik, if21b082, 2023<br>
+<br>
 Technikum Wien<br>
 Software Engineering 1<br>
 time-spent: ~ 200 h*

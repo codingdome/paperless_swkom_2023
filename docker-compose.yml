@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: doc_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.15
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    networks:
+      - esnet
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.15
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    ports:
+      - "9092:5601"
+    networks:
+      - esnet
+    depends_on:
+      - elasticsearch
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: my-rabbit
+    ports:
+      - "5672:5672"
+      - "9093:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: 12345678
+    restart: always
+
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+    volumes:
+      - ./minio_storage:/data
+    command: server --console-address ":9090" /data
+    env_file: .env
+    restart: always
+
+volumes:
+  postgres_data:
+  esdata1:
+    driver: local
+
+networks:
+  esnet:
+    driver: bridge
