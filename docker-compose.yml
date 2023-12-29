@@ -11,6 +11,8 @@ services:
       POSTGRES_PASSWORD: admin
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - esnet
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.15
@@ -47,6 +49,8 @@ services:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: 12345678
     restart: always
+    networks:
+      - esnet
 
   minio:
     image: minio/minio:latest
@@ -58,6 +62,51 @@ services:
     command: server --console-address ":9090" /data
     env_file: .env
     restart: always
+    networks:
+      - esnet
+
+  docrest:
+    build: ./DocREST
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db
+      - elasticsearch
+      - rabbitmq
+      - minio
+    networks:
+      - esnet
+
+  docprotocol:
+    build: ./DocPROTOCOL
+    ports:
+      - "8083:8083"
+    depends_on:
+      - db
+      - elasticsearch
+      - rabbitmq
+      - minio
+    networks:
+      - esnet
+
+  docservices:
+    build: ./DocSERVICES
+    ports:
+      - "8082:8082"
+    depends_on:
+      - db
+      - elasticsearch
+      - rabbitmq
+      - minio
+    networks:
+      - esnet
+      
+  docui:
+    build: ./DocUI
+    ports:
+      - "80:80"
+    networks:
+      - esnet
 
 volumes:
   postgres_data:
