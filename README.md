@@ -110,6 +110,11 @@ ElasticSearch | 9092
 - Docker images start schlägt manchmal fehl für die Java Server, da diese abhängig von den anderen Services sind. Einige health-checks wurden im compose file bereits implementiert, könnten jedoch umfassender und genauer sein
 - OCR: Tesseract X PdfBox: Aktuell werden image files (png, jpg, jpeg) von Tesseract verarbeitet, PDFs von PdfBox. Das funktioniert für PDFs nur so lange diese auch als Text im PDF hinterlegt sind (Bilder in PDFs werden ignoriert). Tesseract selbst funktioniert - jedoch nur gut mit Computer-Schrift -> Handschrift Erkennung ist schlecht. Sprachensupport nur englisch aktuell. -> Erweiterung denkbar.
 
+### Unit Tests
+In Summe sind 55 Unit Tests hinterlegt, wobei diese jetzt im angepassten Environment alle fehl schlagen, da sie auf eine andere Entwicklungsumgebung angewiesen sind, bzw. auf das Starten der anderen Services (z.B. Repository Test an Datenbank). 
+
+Wichtig wäre hier eine klare Trennung zwischen dem Repository hier - in welchem die Services auf einander angewiesen sind und einer klaren Entwicklugnsumgebung, in welcher die Services getrennt und unabhängig laufen können.
+
 ### Good (here: bad) Practice
 - DASHBOARD: Aktuell teils direkt Zugriffe auf z.B. Datenbanken / Teils Zugriff über PROTOCOL Server (welcher selbst ebenso failen könnte usw.)
 - Unit Tests umfassend, aber nicht allumfassend - besser vollständig alles testen
