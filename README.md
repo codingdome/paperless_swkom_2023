@@ -74,6 +74,8 @@ Das React Frontend ist ebenso wie sämtliche Server von Grund auf neu entwickelt
 ## Einrichtung & Start
 Zum Start der einzelnen Micro-Services liegen sowohl ein docker-compose.yml file, als auch ein shell script bereit. Wichtig: In jedem Fall ist es ratsam zu warten bis alle Services zuverlässig gestartet sind - davor könnten einige Service über die Ports noch nicht erreichbar sein.
 
+**Vor dem Start: Docker Daemon starten(!)**
+
 ### Start Shell
 Im Root folder: 
 
