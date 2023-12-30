@@ -13,6 +13,11 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - esnet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d doc_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.15
@@ -25,6 +30,11 @@ services:
       - esdata1:/usr/share/elasticsearch/data
     networks:
       - esnet
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.15
@@ -36,7 +46,8 @@ services:
     networks:
       - esnet
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -51,6 +62,11 @@ services:
     restart: always
     networks:
       - esnet
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmqctl status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   minio:
     image: minio/minio:latest
@@ -64,28 +80,42 @@ services:
     restart: always
     networks:
       - esnet
+    # healthcheck:
+    #   test: ["CMD-SHELL", "curl -I http://minio:9000/minio/health/live || exit 1"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
 
   docrest:
     build: ./DocREST
     ports:
       - "8081:8081"
     depends_on:
-      - db
-      - elasticsearch
-      - rabbitmq
-      - minio
+      db:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      minio:
+        condition: service_started
     networks:
       - esnet
+
 
   docprotocol:
     build: ./DocPROTOCOL
     ports:
       - "8083:8083"
     depends_on:
-      - db
-      - elasticsearch
-      - rabbitmq
-      - minio
+      db:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      minio:
+        condition: service_started
     networks:
       - esnet
 
@@ -94,10 +124,14 @@ services:
     ports:
       - "8082:8082"
     depends_on:
-      - db
-      - elasticsearch
-      - rabbitmq
-      - minio
+      db:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      minio:
+        condition: service_started
     networks:
       - esnet
       
