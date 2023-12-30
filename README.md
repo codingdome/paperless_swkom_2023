@@ -13,8 +13,15 @@ Willkommen bei unserem Paperless System "DOC". Dem wohl beeindruckensten Dokumen
 
 ![title](src_readme/doc-logo.png)
 
+## UI /UX Design
+Das UI/UX Design für die Web-Applikation erfolgte über Figma. Darauf basierend eine custom Umsetzung in React mit Unterstützung von TailwindCSS. 
+
+![title](src_readme/figma.png)
+
 ## Server Architektur
 Die folgende Grafik zeigt den recht komplexen Aufbau von DOC. Im Zentrum stehen drei Java-Server, sowie ein React Frontend. 
+
+![title](src_readme/architecture.png)
 
 ### Doc REST
 Der Doc REST Server übernimmt sämtliche Aufgaben bezogen auf File Upload, Löschen, Updaten (CRUD Operations). 
@@ -24,8 +31,6 @@ Der Doc SERVICE Server enthält einen OCR Worker mittels Tesseract für PNG, JPG
 
 ### Doc PROTOCOL
 Doc PROTOCOL stellt in einem POC einen Server zum Monitoring, sowie zur Kontroller der 2 Hauptserver dar. Seine Funktionen umfassen unteranderem momentane Daten einzulesen, sowie alle Datenbanken zu löschen. Theoretisch denkbar wären deutlich weitreichendere Funktionalitäten, wie z.B. automatisch integrierte Test.
-
-![title](src_readme/architecture.png)
 
 ### RabbitMQ
 Als Message Broker liegt der Applikation RabbitMQ zugrunde. In dieser Architektur übernimmt er vor allem das Erfassen von neuen Uploads im Doc REST und der damit folgenden Nachricht an Doc SERVICES zum Start der OCR Worker.
