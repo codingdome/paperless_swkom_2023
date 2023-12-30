@@ -3,7 +3,8 @@
 ©Viktor Bartosik, if21b082, 2023<br>
 <br>
 Technikum Wien<br>
-Software Engineering 1<br>
+Softwarekomponentensysteme (SWKOM)<br>
+Markus Holzer<br>
 time-spent: ~ 200 h*
 
 # PAPERLESS "DOC" Softwarekomponentensystem
@@ -43,12 +44,73 @@ Das React Frontend ist ebenso wie sämtliche Server von Grund auf neu entwickelt
 
 Über das eigens entwickelte Dashboard (zu erreichen unter localhost:80/dashboard) erhält man Einsicht in die aktuellen Stati der Server, sowie einen allgemeinen Überblick über die Speicherstände der Datenbanken. Darüber hinaus bietet das Dashboard die Möglichkeit einen Integration Test vom Frontend aus zu starten. Dieses durchläuft die wichtigsten Schritte der Applikationen und kontrolliert diese jeweils auf ihre richtige Durchführung. Sämtliche dadurch entstandenen Änderungen werden am Ende des Tests rückgängig gemacht.
 
+### Ordner Struktur
+
+- /root (paperless_swkom_2023)
+    - docker-compose.yml
+    - start-env-linux.sh
+    - start-env-mac.sh
+    - README.md
+    - DocPROTOCOL
+        - Java Server: PROTOCOL
+    - DocREST
+        - Java Server: REST
+    - DocSERVICES
+        - Java Server: SERVICES
+    - DocUI
+        - React App: UI
+    - src_readme
+        - images for readme
+    - minio_storage
+        - files (= bucket)
+
+
+
 ## Einrichtung & Start
+Zum Start der einzelnen Micro-Services liegen sowohl ein docker-compose.yml file, als auch ein shell script bereit. Wichtig: In jedem Fall ist es ratsam zu warten bis alle Services zuverlässig gestartet sind - davor könnten einige Service über die Ports noch nicht erreichbar sein.
+
+### Start Shell
+Im Root folder: 
+
+MAC: ``` sh start-env-mac.sh ```
+
+LINUX: ```sh start-env-linux.sh ```
+
+WINDOWS: ``` Kauf dir einen Mac oder Linux ```
+
+Anmerkung: Das Shell-Skript ist nur auf Mac-OS getestet und braucht ggfs. Anpassungen je nach Linux Distribution.
+
+### Manual Start Docker-Compose
+Im Root folder: 
+
+``` docker-compose up --build ```
+
+Wichtig: --build muss mit angegeben werden, da einige images erst noch gebuilded werden müssen. 
+Sobald alle Services im Docker gestartet sind (das kann dauern), können die einzelnen Service über localhost:PORT erreicht werden. 
+Die wichtigsten sind: 
+
+Service  | Port
+------------- | -------------
+DocUI  | 80
+DocUI Dashboard | 80/dashboard
+MinIO Console | 9090
+Postgres Adminer | 9091 (defekt)
+RabbitMQ | 9093
+ElasticSearch | 9092
+
 
 ## Known Issues
 
 ### Funktionalität
+- Docker images start schlägt manchmal fehl für die Java Server, da diese abhängig von den anderen Services sind. Einige health-checks wurden im compose file bereits implementiert, könnten jedoch umfassender und genauer sein
+- OCR: Tesseract X PdfBox: Aktuell werden image files (png, jpg, jpeg) von Tesseract verarbeitet, PDFs von PdfBox. Das funktioniert für PDFs nur so lange diese auch als Text im PDF hinterlegt sind (Bilder in PDFs werden ignoriert). Tesseract selbst funktioniert - jedoch nur gut mit Computer-Schrift -> Handschrift Erkennung ist schlecht. Sprachensupport nur englisch aktuell. -> Erweiterung denkbar.
 
-### Good Practice
+### Good (here: bad) Practice
+- DASHBOARD: Aktuell teils direkt Zugriffe auf z.B. Datenbanken / Teils Zugriff über PROTOCOL Server (welcher selbst ebenso failen könnte usw.)
+- Unit Tests umfassend, aber nicht allumfassend - besser vollständig alles testen
+- automatisierte Tests (auch beim Build) (werden aktuell ignoriert beim build, da Fehler durch Abhängigkeiten von anderen Services entstehen im Docker Environment)
+- SearchService im REST Server kümmert sich auch um Löschen von Daten -> hier bzgl. wording eine bessere Trennung von Datenmanagement in ElasticSearch und Such-Zugriffen
 
 ### Nice To Have
+- Umfassendere und besser gegliederte Monitoring Funktionalität über Dashboard
+- PDF to img conversion (wenn kein text in pdfs) und dann OCR mit Tesseract
