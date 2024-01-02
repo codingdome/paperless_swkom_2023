@@ -79,11 +79,14 @@ Zum Start der einzelnen Micro-Services liegen sowohl ein docker-compose.yml file
 **2. Vor dem Start: Im Root Verzeichnis Ordner "minio_storage" erstellen (falls nicht vorhanden) & in diesem Ordner einen Ordner "files" erstellen** 
 -- Ziel: root/minio_storage/files -> vorhanden.
 
-WICHTIG NOCH: 
-vor Docker-Compose die 3 Server builden mit mvn clean install - DskipTests 
+**3. Server Builden:**
+1. Im folder /DocREST: ``` mvn clean install -DskipTests ```
+2. Im folder /DocSERVICES: ``` mvn clean install -DskipTests ```
+3. Im folder /DocPROTOCOL: ``` mvn clean install -DskipTests ```
 
-ODER: 
-JAR Files (target folder) mit deployen(!)
+Kontrolle: In jedem folder sollte nun ein /target folder erstellt worden sein und darin ein File namens: SERVER_NAME-0.0.1-SNAPSHOT.jar 
+(SERVER_NAME = DocRest / DocPROTOCOL / DocSERVICES)
+Sollte dieses File anders benannt sein ggfs. umbennen.
 
 ### Start Shell
 Im Root folder: 
