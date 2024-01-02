@@ -76,6 +76,12 @@ Zum Start der einzelnen Micro-Services liegen sowohl ein docker-compose.yml file
 
 **Vor dem Start: Docker Daemon starten(!)**
 
+WICHTIG NOCH: 
+vor Docker-Compose die 3 Server builden mit mvn clean install - DskipTests 
+
+ODER: 
+JAR Files (target folder) mit deployen(!)
+
 ### Start Shell
 Im Root folder: 
 
