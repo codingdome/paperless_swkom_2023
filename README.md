@@ -74,7 +74,10 @@ Das React Frontend ist ebenso wie sämtliche Server von Grund auf neu entwickelt
 ## Einrichtung & Start
 Zum Start der einzelnen Micro-Services liegen sowohl ein docker-compose.yml file, als auch ein shell script bereit. Wichtig: In jedem Fall ist es ratsam zu warten bis alle Services zuverlässig gestartet sind - davor könnten einige Service über die Ports noch nicht erreichbar sein.
 
-**Vor dem Start: Docker Daemon starten(!)**
+**1. Vor dem Start: Docker Daemon starten**
+
+**2. Vor dem Start: Im Root Verzeichnis Ordner "minio_storage" erstellen (falls nicht vorhanden) & in diesem Ordner einen Ordner "files" erstellen** 
+-- Ziel: root/minio_storage/files -> vorhanden.
 
 WICHTIG NOCH: 
 vor Docker-Compose die 3 Server builden mit mvn clean install - DskipTests 
