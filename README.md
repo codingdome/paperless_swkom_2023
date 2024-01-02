@@ -122,6 +122,7 @@ Wichtig wäre hier eine klare Trennung zwischen dem Repository hier - in welchem
 - Unit Tests umfassend, aber nicht allumfassend - besser vollständig alles testen
 - automatisierte Tests (auch beim Build) (werden aktuell ignoriert beim build, da Fehler durch Abhängigkeiten von anderen Services entstehen im Docker Environment)
 - SearchService im REST Server kümmert sich auch um Löschen von Daten -> hier bzgl. wording eine bessere Trennung von Datenmanagement in ElasticSearch und Such-Zugriffen
+- Access & Passwort Management -> wird hier einfach plain hochgeladen, im ernstfall natürlich verschlüsselt privat übertragen und persönlich einbetten in Code o.ä.
 
 ### Nice To Have
 - Umfassendere und besser gegliederte Monitoring Funktionalität über Dashboard
