@@ -88,6 +88,11 @@ Kontrolle: In jedem folder sollte nun ein /target folder erstellt worden sein un
 (SERVER_NAME = DocRest / DocPROTOCOL / DocSERVICES)
 Sollte dieses File anders benannt sein ggfs. umbennen.
 
+**4. node-modules installieren**
+navigiere oder öffne ein terminal fenster im Ordner /DocUI
+
+Befehl: ```npm i ``` 
+
 ### Start Shell
 Im Root folder: 
 
